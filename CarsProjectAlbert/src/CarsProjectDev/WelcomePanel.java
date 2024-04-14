@@ -1,20 +1,19 @@
-package CarsProjectDev;
+package com.example.carsprojectdev;
+
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.border.*;
+import javax.swing.event.*;
+
 /**
- * A welcome dialog, which displays basic statistics about the cars in the data file
- * @
+ * A welcome dialog, which displays basic statistics about the cars in the data
+ * file @
  *
- * PUBLIC FEATURES:
- * // Constructors
- *    public WelcomePanel(CarSalesSystem carSys, JPanel dest, String data)
+ * PUBLIC FEATURES: // Constructors public WelcomePanel(CarSalesSystem carSys,
+ * JPanel dest, String data)
  *
- * // Methods
- *    public void carsUpdated(CarUpdateEvent ev)
- *    public void stateChanged(ChangeEvent ev)
+ * // Methods public void carsUpdated(CarUpdateEvent ev) public void
+ * stateChanged(ChangeEvent ev)
  *
  * COLLABORATORS:
  *
@@ -22,8 +21,7 @@ import javax.swing.border.*;
  * @version 1.0, 16 Oct 2004
  * @author Adam Black
  */
-public class WelcomePanel extends JPanel implements ChangeListener
-{
+public class WelcomePanel extends JPanel implements ChangeListener {
 	private CarSalesSystem carSystem;
 	private JLabel headingLabel = new JLabel("Welcome to the Car Sales System", JLabel.CENTER);
 	private JLabel carsLabel = new JLabel();
@@ -40,11 +38,10 @@ public class WelcomePanel extends JPanel implements ChangeListener
 
 	/**
 	 * @param carSys link to CarSalesSystem object
-	 * @param dest panel to place components within
-	 * @param data filename of data file
+	 * @param dest   panel to place components within
+	 * @param data   filename of data file
 	 */
-	public WelcomePanel(CarSalesSystem carSys, String data)
-	{
+	public WelcomePanel(CarSalesSystem carSys, String data) {
 		carSystem = carSys;
 		file = data;
 		setLayout(new BorderLayout(0, 10));
@@ -74,32 +71,26 @@ public class WelcomePanel extends JPanel implements ChangeListener
 	 *
 	 * @param ev CarUpdateEvent Object
 	 */
-	public void carsUpdated(CarUpdateEvent ev)
-	{
-		if (ev.getSource() == carSystem)
-		{
+	public void carsUpdated(CarUpdateEvent ev) {
+		if (ev.getSource() == carSystem) {
 			carsUpdated = true;
 		}
 	}
 
 	/**
-	 * when the tab on the main frame gets changed over to this one, we may have to update the
-	 * car list with the latest version
+	 * when the tab on the main frame gets changed over to this one, we may have to
+	 * update the car list with the latest version
 	 *
 	 * @param ev ChangeEvent object
 	 */
-	public void stateChanged(ChangeEvent ev)
-	{
+	public void stateChanged(ChangeEvent ev) {
 		// the source came from a JTabbedPane
-		if (ev.getSource() instanceof JTabbedPane)
-		{
-			JTabbedPane tab = (JTabbedPane)ev.getSource();
+		if (ev.getSource() instanceof JTabbedPane) {
+			JTabbedPane tab = (JTabbedPane) ev.getSource();
 			// the Welcome tab has just been chosen
-			if (tab.getSelectedIndex() == 0)
-			{
+			if (tab.getSelectedIndex() == 0) {
 				// if the statistics is not up to date
-				if (carsUpdated)
-				{
+				if (carsUpdated) {
 					// update them
 					updateStats();
 					// next time don't update the statistics, unless a car is added to the system
@@ -112,22 +103,21 @@ public class WelcomePanel extends JPanel implements ChangeListener
 	/**
 	 * update all the statistics
 	 */
-	private void updateStats()
-	{
+	private void updateStats() {
 		// receive new statistics
-		int cars = (int)carSystem.getStatistics(CarSalesSystem.CARS_COUNT);
-		int manufacturers = (int)carSystem.getStatistics(CarSalesSystem.MANUFACTURERS_COUNT);
+		int cars = (int) carSystem.getStatistics(CarSalesSystem.CARS_COUNT);
+		int manufacturers = (int) carSystem.getStatistics(CarSalesSystem.MANUFACTURERS_COUNT);
 		double avgPrice = Math.floor(carSystem.getStatistics(CarSalesSystem.AVERAGE_PRICE) * 10 + 0.5) / 10;
 		double avgKm = Math.floor(carSystem.getStatistics(CarSalesSystem.AVERAGE_DISTANCE) * 10 + 0.5) / 10;
 		double avgAge = Math.floor(carSystem.getStatistics(CarSalesSystem.AVERAGE_AGE) * 10 + 0.5) / 10;
 		java.io.File f = new java.io.File(file);
 		long size = f.length(); // get length of binary data file
 
-		carsLabel.setText("Total number of cars: " + String.valueOf(cars));
-		manufacturersLabel.setText("Total number of manufacturers: " + String.valueOf(manufacturers));
-		avgPriceLabel.setText("Average car price: " + String.valueOf(avgPrice));
-		avgKmLabel.setText("Average car kilometers: " + String.valueOf(avgKm));
-		avgAgeLabel.setText("Average car age: " + String.valueOf(avgAge));
+		carsLabel.setText("Total number of cars: " + cars);
+		manufacturersLabel.setText("Total number of manufacturers: " + manufacturers);
+		avgPriceLabel.setText("Average car price: " + avgPrice);
+		avgKmLabel.setText("Average car kilometers: " + avgKm);
+		avgAgeLabel.setText("Average car age: " + avgAge);
 		versionLabel.setText("Car Sales System, Version " + CarSalesSystem.APP_VERSION);
 		dataSizeLabel.setText("Size of data file: " + size + " bytes");
 	}
