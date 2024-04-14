@@ -1,28 +1,25 @@
-package CarsProjectDev;
+package com.example.carsprojectdev;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
 /**
- * A panel used for obtaining search parameters using car age
- * @
+ * A panel used for obtaining search parameters using car age @
  *
- * PUBLIC FEATURES:
- * // Constructors
- *    public SearchByAgePanel(CarSalesSystem carSys, JPanel dest)
+ * PUBLIC FEATURES: // Constructors public SearchByAgePanel(CarSalesSystem
+ * carSys, JPanel dest)
  *
- * // Methods
- *    public void actionPerformed(ActionEvent ev)
+ * // Methods public void actionPerformed(ActionEvent ev)
  *
- * COLLABORATORS:
- *    CarDetailComponents
+ * COLLABORATORS: CarDetailComponents
  *
  * @version 1.0, 16 Oct 2004
  * @author Adam Black
  */
-public class SearchByAgePanel extends JPanel implements ActionListener
-{
-	private final String[] age = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-		"11-15", "16-20", "21-25", "26-30", "31+"};
+public class SearchByAgePanel extends JPanel implements ActionListener {
+	private final String[] age = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11-15", "16-20", "21-25",
+			"26-30", "31+" };
 	private Car[] carList;
 	private CarSalesSystem carSystem;
 	private int currentIndex = 0;
@@ -41,10 +38,9 @@ public class SearchByAgePanel extends JPanel implements ActionListener
 
 	/**
 	 * @param carSys links to a CarSalesSystem object
-     * @param dest where the panel will be displayed on the main frame
-     */
-	public SearchByAgePanel(CarSalesSystem carSys)
-	{
+	 * @param dest   where the panel will be displayed on the main frame
+	 */
+	public SearchByAgePanel(CarSalesSystem carSys) {
 		carSystem = carSys;
 		setLayout(new BorderLayout());
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
@@ -83,8 +79,7 @@ public class SearchByAgePanel extends JPanel implements ActionListener
 	 *
 	 * @param ev ActionEvent object
 	 */
-	public void actionPerformed(ActionEvent ev)
-	{
+	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == searchButton)
 			searchButtonClicked();
 		else if (ev.getSource() == previousButton)
@@ -96,38 +91,35 @@ public class SearchByAgePanel extends JPanel implements ActionListener
 	}
 
 	/**
-	 * get next index if it exists, and display it visually using CarDetailsComponents
+	 * get next index if it exists, and display it visually using
+	 * CarDetailsComponents
 	 */
-	private void nextButtonClicked()
-	{
-		if (currentIndex < carList.length - 1)
-		{
+	private void nextButtonClicked() {
+		if (currentIndex < carList.length - 1) {
 			currentIndex++;
 			carComponents.displayDetails(carList[currentIndex]);
-		}
-		else
-			JOptionPane.showMessageDialog(carSystem, "You can't navigate any further", "Alert", JOptionPane.ERROR_MESSAGE);
+		} else
+			JOptionPane.showMessageDialog(carSystem, "You can't navigate any further", "Alert",
+					JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**
-	 * get previous index if it exists, and display it visually using CarDetailsComponents
+	 * get previous index if it exists, and display it visually using
+	 * CarDetailsComponents
 	 */
-	private void previousButtonClicked()
-	{
-		if (currentIndex > 0)
-		{
+	private void previousButtonClicked() {
+		if (currentIndex > 0) {
 			currentIndex--;
 			carComponents.displayDetails(carList[currentIndex]);
-		}
-		else
-			JOptionPane.showMessageDialog(carSystem, "You can't navigate any further", "Alert", JOptionPane.ERROR_MESSAGE);
+		} else
+			JOptionPane.showMessageDialog(carSystem, "You can't navigate any further", "Alert",
+					JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**
 	 * clear search results, begin next search from scratch
 	 */
-	private void resetButtonClicked()
-	{
+	private void resetButtonClicked() {
 		currentIndex = 0;
 		carList = null;
 		carComponents.setVisible(false);
@@ -137,36 +129,30 @@ public class SearchByAgePanel extends JPanel implements ActionListener
 	/**
 	 * find out search parameters, and do a search
 	 */
-	private void searchButtonClicked()
-	{
+	private void searchButtonClicked() {
 		// converts a string range to a lower and upper bounds.
-		double[] range = CarSalesSystem.convertToRange((String)ageCombo.getSelectedItem());
+		double[] range = CarSalesSystem.convertToRange((String) ageCombo.getSelectedItem());
 
-		if (range[0] >= 0)
-		{
-			carList = carSystem.search((int)range[0], (int)range[1]);
+		if (range[0] >= 0) {
+			carList = carSystem.search((int) range[0], (int) range[1]);
 		}
 
-		if (carList.length > 0)
-		{
+		if (carList.length > 0) {
 			currentIndex = 0;
 			carComponents.setVisible(true);
 			carComponents.displayDetails(carList[0]);
 
-			if (carList.length == 1)
-			{
+			if (carList.length == 1) {
 				nextButton.setEnabled(false);
 				previousButton.setEnabled(false);
-			}
-			else
-			{
+			} else {
 				nextButton.setEnabled(true);
 				previousButton.setEnabled(true);
 			}
 
 			carSystem.repaint();
-		}
-		else
-			JOptionPane.showMessageDialog(carSystem, "Sorry, no search results were returned", "Search failed", JOptionPane.WARNING_MESSAGE);
+		} else
+			JOptionPane.showMessageDialog(carSystem, "Sorry, no search results were returned", "Search failed",
+					JOptionPane.WARNING_MESSAGE);
 	}
 }
