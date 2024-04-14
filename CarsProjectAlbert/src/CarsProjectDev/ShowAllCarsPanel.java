@@ -1,29 +1,24 @@
-package CarsProjectDev;
-import java.awt.*;
+package com.example.carsprojectdev;
+
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+
 /**
- * A panel used for display information about all cars in the collection
- * @
+ * A panel used for display information about all cars in the collection @
  *
- * PUBLIC FEATURES:
- * // Constructors
- *    public ShowAllCarsPanel(CarSalesSystem carSys, JPanel dest)
+ * PUBLIC FEATURES: // Constructors public ShowAllCarsPanel(CarSalesSystem
+ * carSys, JPanel dest)
  *
- * // Methods
- *    public void actionPerformed(ActionEvent ev)
- *    public void carsUpdated(CarUpdateEvent ev)
- *    public void stateChanged(ChangeEvent ev)
+ * // Methods public void actionPerformed(ActionEvent ev) public void
+ * carsUpdated(CarUpdateEvent ev) public void stateChanged(ChangeEvent ev)
  *
- * COLLABORATORS:
- *    CarDetailComponents
+ * COLLABORATORS: CarDetailComponents
  *
  * @version 1.0, 16 Oct 2004
  * @author Adam Black
  */
-public class ShowAllCarsPanel extends JPanel implements ActionListener, ChangeListener
-{
+public class ShowAllCarsPanel extends JPanel implements ActionListener, ChangeListener {
 	private CarSalesSystem carSystem;
 	private Car[] carList;
 	private int currentIndex = 0;
@@ -36,10 +31,9 @@ public class ShowAllCarsPanel extends JPanel implements ActionListener, ChangeLi
 
 	/**
 	 * @param carSys links to a CarSalesSystem object
-     * @param dest where the panel will be displayed on the main frame
-     */
-	public ShowAllCarsPanel(CarSalesSystem carSys)
-	{
+	 * @param dest   where the panel will be displayed on the main frame
+	 */
+	public ShowAllCarsPanel(CarSalesSystem carSys) {
 		carSystem = carSys;
 		carList = carSystem.getAllCars();
 
@@ -71,8 +65,7 @@ public class ShowAllCarsPanel extends JPanel implements ActionListener, ChangeLi
 	 *
 	 * @param ev ActionEvent object
 	 */
-	public void actionPerformed(ActionEvent ev)
-	{
+	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == previousButton)
 			previousButtonClicked();
 		else if (ev.getSource() == nextButton)
@@ -84,35 +77,29 @@ public class ShowAllCarsPanel extends JPanel implements ActionListener, ChangeLi
 	 *
 	 * @param ev CarUpdateEvent Object
 	 */
-	public void carsUpdated(CarUpdateEvent ev)
-	{
-		if (ev.getSource() == carSystem)
-		{
+	public void carsUpdated(CarUpdateEvent ev) {
+		if (ev.getSource() == carSystem) {
 			// remember the cars have been updated
 			carsUpdated = true;
 		}
 	}
 
 	/**
-	 * when the tab on the main frame gets changed over to this one, we may have to update the
-	 * car list with the latest version
+	 * when the tab on the main frame gets changed over to this one, we may have to
+	 * update the car list with the latest version
 	 *
 	 * @param ev ChangeEvent object
 	 */
-	public void stateChanged(ChangeEvent ev)
-	{
+	public void stateChanged(ChangeEvent ev) {
 		// source is a JTabbedPane
-		if (ev.getSource() instanceof JTabbedPane)
-		{
-			JTabbedPane tab = (JTabbedPane)ev.getSource();
+		if (ev.getSource() instanceof JTabbedPane) {
+			JTabbedPane tab = (JTabbedPane) ev.getSource();
 			// if selected tab index is the ShowAllCarsPanel, which is this panel
-			if (tab.getSelectedIndex() == 2)
-			{
+			if (tab.getSelectedIndex() == 2) {
 				// if the cars have been updated since last time
-				if (carsUpdated)
-				{
+				if (carsUpdated) {
 					carList = carSystem.getAllCars();
-					if (!(carList == null))
+					if (carList != null)
 						carComponents.displayDetails(carList[currentIndex]);
 					// next time don't bother updating the car list unless a car is added again
 					carsUpdated = false;
@@ -124,28 +111,24 @@ public class ShowAllCarsPanel extends JPanel implements ActionListener, ChangeLi
 	/**
 	 * display next item in index, otherwise display no next item message dialog
 	 */
-	private void nextButtonClicked()
-	{
-		if (currentIndex < carList.length - 1)
-		{
+	private void nextButtonClicked() {
+		if (currentIndex < carList.length - 1) {
 			currentIndex++;
 			carComponents.displayDetails(carList[currentIndex]);
-		}
-		else
-			JOptionPane.showMessageDialog(carSystem, "You can't navigate any further", "Alert", JOptionPane.ERROR_MESSAGE);
+		} else
+			JOptionPane.showMessageDialog(carSystem, "You can't navigate any further", "Alert",
+					JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**
 	 * display previous item in index, otherwise display no next item message dialog
 	 */
-	private void previousButtonClicked()
-	{
-		if (currentIndex > 0)
-		{
+	private void previousButtonClicked() {
+		if (currentIndex > 0) {
 			currentIndex--;
 			carComponents.displayDetails(carList[currentIndex]);
-		}
-		else
-			JOptionPane.showMessageDialog(carSystem, "You can't navigate any further", "Alert", JOptionPane.ERROR_MESSAGE);
+		} else
+			JOptionPane.showMessageDialog(carSystem, "You can't navigate any further", "Alert",
+					JOptionPane.ERROR_MESSAGE);
 	}
 }
