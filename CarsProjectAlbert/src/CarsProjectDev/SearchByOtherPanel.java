@@ -1,30 +1,28 @@
-package CarsProjectDev;
+package com.example.carsprojectdev;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
 /**
- * A panel used for obtaining search parameters using car price and distance travelled
- * @
+ * A panel used for obtaining search parameters using car price and distance
+ * travelled @
  *
- * PUBLIC FEATURES:
- * // Constructors
- *    public SearchByOtherPanel(CarSalesSystem carSys, JPanel dest)
+ * PUBLIC FEATURES: // Constructors public SearchByOtherPanel(CarSalesSystem
+ * carSys, JPanel dest)
  *
- * // Methods
- *    public void actionPerformed(ActionEvent ev)
+ * // Methods public void actionPerformed(ActionEvent ev)
  *
- * COLLABORATORS:
- *    CarDetailComponents
+ * COLLABORATORS: CarDetailComponents
  *
  * @version 1.0, 16 Oct 2004
  * @author Adam Black
  */
-public class SearchByOtherPanel extends JPanel implements ActionListener
-{
-	private final String[] price = {"5001-10000", "10001-15000", "15001-20000", "20001-50000",
-		"50001-100000", "100001-200000", "200001-300000", "300001+"};
-	private final String[] distance = {"0", "1-10000", "10001-20000", "20001-30000", "30001-40000",
-		"40001-50000", "50001-80000", "80001-100000", "100001-200000", "200001-300000", "300001+"};
+public class SearchByOtherPanel extends JPanel implements ActionListener {
+	private final String[] price = { "5001-10000", "10001-15000", "15001-20000", "20001-50000", "50001-100000",
+			"100001-200000", "200001-300000", "300001+" };
+	private final String[] distance = { "0", "1-10000", "10001-20000", "20001-30000", "30001-40000", "40001-50000",
+			"50001-80000", "80001-100000", "100001-200000", "200001-300000", "300001+" };
 	private Car[] carList;
 	private CarSalesSystem carSystem;
 	private int currentIndex = 0;
@@ -47,10 +45,9 @@ public class SearchByOtherPanel extends JPanel implements ActionListener
 
 	/**
 	 * @param carSys links to a CarSalesSystem object
-     * @param dest where the panel will be displayed on the main frame
-     */
-	public SearchByOtherPanel(CarSalesSystem carSys)
-	{
+	 * @param dest   where the panel will be displayed on the main frame
+	 */
+	public SearchByOtherPanel(CarSalesSystem carSys) {
 		carSystem = carSys;
 		setLayout(new BorderLayout());
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
@@ -91,8 +88,7 @@ public class SearchByOtherPanel extends JPanel implements ActionListener
 	 *
 	 * @param ev ActionEvent object
 	 */
-	public void actionPerformed(ActionEvent ev)
-	{
+	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == searchButton)
 			searchButtonClicked();
 		else if (ev.getSource() == resetButton)
@@ -104,38 +100,35 @@ public class SearchByOtherPanel extends JPanel implements ActionListener
 	}
 
 	/**
-	 * get next index if it exists, and display it visually using CarDetailsComponents
+	 * get next index if it exists, and display it visually using
+	 * CarDetailsComponents
 	 */
-	private void nextButtonClicked()
-	{
-		if (currentIndex < carList.length - 1)
-		{
+	private void nextButtonClicked() {
+		if (currentIndex < carList.length - 1) {
 			currentIndex++;
 			carComponents.displayDetails(carList[currentIndex]);
-		}
-		else
-			JOptionPane.showMessageDialog(carSystem, "You can't navigate any further", "Alert", JOptionPane.ERROR_MESSAGE);
+		} else
+			JOptionPane.showMessageDialog(carSystem, "You can't navigate any further", "Alert",
+					JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**
-	 * get previous index if it exists, and display it visually using CarDetailsComponents
+	 * get previous index if it exists, and display it visually using
+	 * CarDetailsComponents
 	 */
-	private void previousButtonClicked()
-	{
-		if (currentIndex > 0)
-		{
+	private void previousButtonClicked() {
+		if (currentIndex > 0) {
 			currentIndex--;
 			carComponents.displayDetails(carList[currentIndex]);
-		}
-		else
-			JOptionPane.showMessageDialog(carSystem, "You can't navigate any further", "Alert", JOptionPane.ERROR_MESSAGE);
+		} else
+			JOptionPane.showMessageDialog(carSystem, "You can't navigate any further", "Alert",
+					JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**
 	 * clear search results, begin next search from scratch
 	 */
-	private void resetButtonClicked()
-	{
+	private void resetButtonClicked() {
 		currentIndex = 0;
 		carList = null;
 		carComponents.setVisible(false);
@@ -146,37 +139,31 @@ public class SearchByOtherPanel extends JPanel implements ActionListener
 	/**
 	 * search cars based on price and distance travelled
 	 */
-	private void searchButtonClicked()
-	{
+	private void searchButtonClicked() {
 		// convert distance and price combo box text into a range
-		double[] distanceRange = CarSalesSystem.convertToRange((String)distanceCombo.getSelectedItem());
-		double[] priceRange = CarSalesSystem.convertToRange((String)priceCombo.getSelectedItem());
+		double[] distanceRange = CarSalesSystem.convertToRange((String) distanceCombo.getSelectedItem());
+		double[] priceRange = CarSalesSystem.convertToRange((String) priceCombo.getSelectedItem());
 
-		if (priceRange[0] >= 0 && distanceRange[0] >= 0)
-		{
-			carList = carSystem.search((int)priceRange[0], (int)priceRange[1], (double)distanceRange[0], (double)distanceRange[1]);
+		if (priceRange[0] >= 0 && distanceRange[0] >= 0) {
+			carList = carSystem.search((int) priceRange[0], (int) priceRange[1], distanceRange[0], distanceRange[1]);
 		}
 
-		if (carList.length > 0)
-		{
+		if (carList.length > 0) {
 			currentIndex = 0;
 			carComponents.setVisible(true);
 			carComponents.displayDetails(carList[0]);
 
-			if (carList.length == 1)
-			{
+			if (carList.length == 1) {
 				nextButton.setEnabled(false);
 				previousButton.setEnabled(false);
-			}
-			else
-			{
+			} else {
 				nextButton.setEnabled(true);
 				previousButton.setEnabled(true);
 			}
 
 			carSystem.repaint();
-		}
-		else
-			JOptionPane.showMessageDialog(carSystem, "Sorry, no search results were returned", "Search failed", JOptionPane.WARNING_MESSAGE);
+		} else
+			JOptionPane.showMessageDialog(carSystem, "Sorry, no search results were returned", "Search failed",
+					JOptionPane.WARNING_MESSAGE);
 	}
 }
